@@ -39,28 +39,32 @@ class Diagnostic(Category):
         """Current status of the server"""
         channel = self.client.get_channel(self.discord_channel)
         raw_response = self.api._status()
+
+        # Query DigitalOcean
         pserver = ['online' if raw_response['server'] else 'offline'][0]
-        minecraft = ['online' if raw_response['minecraft'] else 'offline'][0]
         pending = raw_response['status']
         domain = raw_response['domain']
         ip = raw_response['ip']
+        digitalocean_response = f">>> Pending operations: **{pending}**\n" \
+            f"Gamocosm alias: `{domain}`\n" \
+            f"Server IP address: `{ip}`"
+        await channel.send(f"DigitalOcean server is **{pserver}**\n")
+        await channel.send(digitalocean_response)
 
         # Query MC server
         mc_api = MinecraftServer.lookup(domain)
+        minecraft = ['online' if raw_response['minecraft'] else 'offline'][0]
         minecraft_status = mc_api.status()
         minecraft_query = mc_api.query()
         minecraft_players = ', '.join(minecraft_query.players.names)
         minecraft_publicurl = os.environ['publicUrl'] if os.environ['publicUrl'] else domain
-        response = f"DigitalOcean server is **{pserver}**\n" \
-            f">>> Pending operations: **{pending}**\n" \
-            f">>> Server hostname: `{minecraft_publicurl}`\n" \
-            f">>> Server IP address: `{ip}`\n\n" \
-            "Minecraft server is **{minecraft}**\n" \
-            f">>> Latency: **{minecraft_status.latency} ms**\n" \
-            f">>> Players ({minecraft_status.players.online} total): **{minecraft_players}**"
+        minecraft_response = f">>> Server hostname: `{minecraft_publicurl}`\n" \
+            f"Latency: **{minecraft_status.latency} ms**\n" \
+            f"Players online ({minecraft_status.players.online} total): **{minecraft_players}**"
+        await channel.send(f"Minecraft server is **{minecraft}**\n")
+        await channel.send(minecraft_response)
 
-        await channel.send(response)
-        logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
+        logging.info(f"'{ctx.command}' command called by {ctx.author}.")
 
 
 class DOServer(Category):
