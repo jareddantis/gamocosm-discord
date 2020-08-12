@@ -52,13 +52,12 @@ class Diagnostic(Category):
         minecraft_players = ', '.join(minecraft_query.players.names)
         minecraft_publicurl = os.environ['publicUrl'] if os.environ['publicUrl'] else domain
         response = f"DigitalOcean server is **{pserver}**\n" \
-            f"Pending operations: **{pending}**\n" \
-            f"Server hostname: `{minecraft_publicurl}`\n" \
-            f"Server IP address: `{ip}`\n\n" \
-            "Minecraft server status:\n\n" \
-            f">>>State: **{minecraft}**\n" \
-            f"Latency: **{minecraft_status.latency} ms**\n" \
-            f"Players ({minecraft_status.players.online} total): **{minecraft_players}**"
+            f">>> Pending operations: **{pending}**\n" \
+            f">>> Server hostname: `{minecraft_publicurl}`\n" \
+            f">>> Server IP address: `{ip}`\n\n" \
+            "Minecraft server is **{minecraft}**\n" \
+            f">>> Latency: **{minecraft_status.latency} ms**\n" \
+            f">>> Players ({minecraft_status.players.online} total): **{minecraft_players}**"
 
         await channel.send(response)
         logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
