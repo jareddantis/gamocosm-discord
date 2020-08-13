@@ -6,7 +6,7 @@ from discord.ext import commands
 
 def api_error_handler(err):
     if not err:
-        return "Action succesfully triggered"
+        return "Action successfully triggered."
     else:
         return err
 

@@ -4,10 +4,11 @@ import requests
 
 response_defaults = {
     'server': False,
-    'status': 'none',
+    'status': 'None',
     'domain': '-',
     'ip': '-',
     'minecraft': False,
+    'download': '-'
 }
 
 
@@ -26,6 +27,8 @@ class Server:
         self.api_url = f"https://gamocosm.com/servers/{server_id}/api/{api_key}/"
         self.headers = {}
         self.last_state = False
+        self.last_mc_state = False
+        self.last_op = None
 
     def _get(self, endpoint):
         """Sends a GET request to the specified endpoint"""
