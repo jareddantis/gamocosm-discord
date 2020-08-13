@@ -54,8 +54,8 @@ class Diagnostic(Category):
         # Response
         is_online = server and mc
         emoji = ':white_check_mark:' if is_online else ':x:'
-        response_title = f"**Server is {'up' if is_online else 'down'}** {emoji} {mc_invite}"
-        response_body = f"```\nMinecraft server software: {'' if mc else 'not '}running\n" \
+        response_title = f"{emoji} Server is {'up' if is_online else 'down'}! {mc_invite}"
+        response_body = f"```\nMinecraft server: {'' if mc else 'not '}running\n" \
             f"DigitalOcean VPS: {'up' if server else 'down'}\n" \
             f"Pending operations: {pending}\n" \
             f"VPS direct IP: {ip}\n" \
