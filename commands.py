@@ -49,14 +49,15 @@ class Diagnostic(Category):
         ip = raw_response['ip']
         mc = raw_response['minecraft']
         mc_url = os.environ['publicUrl'] if os.environ['publicUrl'] else domain
+        mc_invite = f'Play at **{mc_url}**' if mc else ''
 
         # Response
         is_online = server and mc
         emoji = ':white_check_mark:' if is_online else ':x:'
-        response_title = f"**Server is {'up' if is_online else 'down'}** {emoji} Play at **{mc_url}**"
-        response_body = f"```\nMinecraft server software: {'up' if mc else 'down'}\n" \
-            f"Pending operations: {pending}\n" \
+        response_title = f"**Server is {'up' if is_online else 'down'}** {emoji} {mc_invite}"
+        response_body = f"```\nMinecraft server software: {'' if mc else 'not '}running\n" \
             f"DigitalOcean VPS: {'up' if server else 'down'}\n" \
+            f"Pending operations: {pending}\n" \
             f"VPS direct IP: {ip}\n" \
             f"VPS Cloudflare alias: {domain}\n"
         if mc:
