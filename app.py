@@ -23,7 +23,6 @@ logging.basicConfig(handlers=[logging.FileHandler('app.log'), logging.StreamHand
 logging.info("------ APP STARTED ------")
 
 config = get_config()
-logging.info(f"Config: {config}")
 server_id = config['serverId']
 api_key = config['apiKey']
 discord_key = config['discordKey']
