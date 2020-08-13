@@ -53,21 +53,22 @@ class Diagnostic(Category):
         # Response
         is_online = server and mc
         emoji = ':white_check_mark:' if is_online else ':x:'
-        response_title = f"{emoji} Server is **{'up' if is_online else 'down'}!** Play at **{mc_url}**`"
-        response_body = f">>> Minecraft software: **{'up' if mc else 'down'}**\n" \
-            f"Pending operations: **{pending}**\n" \
-            f"DigitalOcean VPS: **{server}**\n" \
-            f"VPS direct IP: `{ip}`" \
-            f"VPS Cloudflare alias: `{domain}`\n"
+        response_title = f"**Server is {'up' if is_online else 'down'}** {emoji} Play at **{mc_url}**"
+        response_body = f"```\nMinecraft server software: {'up' if mc else 'down'}\n" \
+            f"Pending operations: {pending}\n" \
+            f"DigitalOcean VPS: {'up' if server else 'down'}\n" \
+            f"VPS direct IP: {ip}\n" \
+            f"VPS Cloudflare alias: {domain}\n"
         if mc:
             # Query MC server
             mc_api = MinecraftServer.lookup(domain)
             mc_status = mc_api.status()
             mc_query = mc_api.query()
             mc_players = ', '.join(mc_query.players.names)
-            response_body += f"Server version: **{mc_query.software.version} ({mc_query.software.brand}**\n" \
-                f"Bot-to-server latency: **{mc_status.latency} ms**\n" \
-                f"Players online ({mc_status.players.online}/{mc_status.players.max}): **{mc_players}**"
+            response_body += f"Server version: {mc_query.software.version} ({mc_query.software.brand})\n" \
+                f"Bot-to-server latency: {mc_status.latency} ms\n" \
+                f"Players online ({mc_status.players.online}/{mc_status.players.max}): {mc_players}"
+        response_body += '```'
         await channel.send(response_title)
         await channel.send(response_body)
 
