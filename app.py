@@ -68,9 +68,9 @@ async def update_presence():
     is_mc_online = status['minecraft']
     if server.last_mc_state != is_mc_online:
         # State changed, alert channel
+        server.last_mc_state = is_mc_online
         channel = client.get_channel(discord_channel)
         await channel.send(f"Minecraft server is now {'up. Have fun!' if is_mc_online else 'down.'}")
-        server.last_state = is_online
 
     # Bot presence
     presence = f"/help | Server {'up' if is_mc_online else 'down'}"
