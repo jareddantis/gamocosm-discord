@@ -25,6 +25,7 @@ class Server:
         self.api_key = api_key
         self.api_url = f"https://gamocosm.com/servers/{server_id}/api/{api_key}/"
         self.headers = {}
+        self.last_state = False
 
     def _get(self, endpoint):
         """Sends a GET request to the specified endpoint"""

@@ -36,12 +36,22 @@ client = Bot(command_prefix=config['discordPrefix'])
 @client.event
 async def on_ready():
     logging.info(f'Bot is ready. We have logged in as {client.user}')
+    server.last_state = server.online() == 'online'
 
 
 @loop(seconds=15)
 async def update_presence():
-    is_online = server.minecraft() == 'online'
-    presence = f"/help | Server {'up' if is_online else 'down'}"
+    # DigitalOcean VPS
+    is_online = server.online() == 'online'
+    if server.last_state != is_online:
+        # State changed, alert channel
+        channel = client.get_channel(discord_channel)
+        await channel.send(f"Server is now {'up' if is_online else 'down'}.")
+        server.last_state = is_online
+
+    # Minecraft server
+    is_mc_online = server.minecraft() == 'online'
+    presence = f"/help | Server {'up' if is_online or is_mc_online else 'down'}"
     await client.change_presence(activity=Activity(name=presence, type=ActivityType.listening))
 
 
