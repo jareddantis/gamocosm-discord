@@ -47,7 +47,7 @@ class Diagnostic(Category):
         pending = raw_response['status']
         domain = raw_response['domain']
         ip = raw_response['ip']
-        mc = raw_response['mc']
+        mc = raw_response['minecraft']
         mc_url = os.environ['publicUrl'] if os.environ['publicUrl'] else domain
 
         # Response
