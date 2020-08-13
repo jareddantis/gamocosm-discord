@@ -47,26 +47,31 @@ class Diagnostic(Category):
         pending = raw_response['status']
         domain = raw_response['domain']
         ip = raw_response['ip']
-        vps_status = f">>> Pending operations: **{pending}**\n" \
-            f"Gamocosm alias: `{domain}`\n" \
-            f"Server IP address: `{ip}`"
-        await channel.send(f"DigitalOcean server is **{server}**\n")
-        await channel.send(vps_status)
+        mc = raw_response['mc']
+        mc_url = os.environ['publicUrl'] if os.environ['publicUrl'] else domain
 
-        # Query MC server
-        mc_api = MinecraftServer.lookup(domain)
-        minecraft = raw_response['minecraft']
-        minecraft_status = mc_api.status()
-        minecraft_query = mc_api.query()
-        minecraft_players = ', '.join(minecraft_query.players.names)
-        minecraft_url = os.environ['publicUrl'] if os.environ['publicUrl'] else domain
-        minecraft_response = f">>> Server hostname: `{minecraft_url}`\n" \
-            f"Latency: **{minecraft_status.latency} ms**\n" \
-            f"Players online ({minecraft_status.players.online} total): **{minecraft_players}**"
-        await channel.send(f"Minecraft server is **{minecraft}**\n")
-        await channel.send(minecraft_response)
+        # Response
+        is_online = server and mc
+        emoji = ':white_check_mark:' if is_online else ':x:'
+        response_title = f"{emoji} Server is **{'up' if is_online else 'down'}!** Play at **{mc_url}**`"
+        response_body = f">>> Minecraft software: **{'up' if mc else 'down'}**\n" \
+            f"Pending operations: **{pending}**\n" \
+            f"DigitalOcean VPS: **{server}**\n" \
+            f"VPS direct IP: `{ip}`" \
+            f"VPS Cloudflare alias: `{domain}`\n"
+        if mc:
+            # Query MC server
+            mc_api = MinecraftServer.lookup(domain)
+            mc_status = mc_api.status()
+            mc_query = mc_api.query()
+            mc_players = ', '.join(mc_query.players.names)
+            response_body += f"Server version: **{mc_query.software.version} ({mc_query.software.brand}**\n" \
+                f"Bot-to-server latency: **{mc_status.latency} ms**\n" \
+                f"Players online ({mc_status.players.online}/{mc_status.players.max}): **{mc_players}**"
+        await channel.send(response_title)
+        await channel.send(response_body)
 
-        logging.info(f"'{ctx.command}' command called by {ctx.author}.")
+        logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was {response_body}")
 
 
 class DOServer(Category):

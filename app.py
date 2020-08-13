@@ -40,8 +40,8 @@ async def on_ready():
 
 @loop(seconds=15)
 async def update_presence():
-    status = server.minecraft()
-    presence = f'/help | Server {status}'
+    is_online = server.minecraft() == 'online'
+    presence = f"/help | Server {'up' if is_online else 'down'}"
     await client.change_presence(activity=Activity(name=presence, type=ActivityType.listening))
 
 

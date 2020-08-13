@@ -52,9 +52,6 @@ class Server:
         for key in response_defaults.keys():
             if key not in raw_status:
                 raw_status[key] = response_defaults[key]
-            else:
-                if key == 'server' or key == 'minecraft':
-                    raw_status[key] = 'online' if raw_status[key] else 'offline'
         return raw_status
 
     def start(self):
