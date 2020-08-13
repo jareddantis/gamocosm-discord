@@ -79,16 +79,11 @@ class DOServer(Category):
     async def start(self, ctx):
         """Starts the DigitalOcean VPS"""
         channel = self.client.get_channel(self.discord_channel)
-        if self.busy:
-            await channel.send(f'Server is currently busy with your last command `{self.current_action}`')
-        else:
-            self.busy = True
-            self.current_action = ctx.command
-            await channel.send('Starting server, please wait. This will take a few minutes.')
-            response = api_error_handler(self.api.start())
-            await channel.send(response)
-            self.busy = False
-            logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
+        self.busy = False
+        await channel.send('Starting server, please wait. This will take a few minutes.')
+        response = api_error_handler(self.api.start())
+        await channel.send(response)
+        logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
 
     @commands.command()
     async def stop(self, ctx):
