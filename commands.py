@@ -116,7 +116,6 @@ class DOServer(Category):
         else:
             self.busy = True
             self.current_action = ctx.command
-            await channel.send('Rebooting server, please wait. This will take a few minutes.')
             response = api_error_handler(self.api.reboot())
             await channel.send(response)
             self.busy = False
