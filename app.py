@@ -60,6 +60,8 @@ async def update_presence():
             await channel.send('Firing up Minecraft server, please wait.')
         elif pending == 'rebooting':
             await channel.send('Rebooting server, please wait.')
+        elif pending == 'saving':
+            await channel.send('Creating DigitalOcean server snapshot.')
         elif pending is None and server.last_op == 'saving':
             await channel.send('Server shut down. Thanks for playing!')
         server.last_op = pending
@@ -70,7 +72,8 @@ async def update_presence():
         # State changed, alert channel
         server.last_mc_state = is_mc_online
         channel = client.get_channel(discord_channel)
-        await channel.send(f"Minecraft server is now {'up. Have fun!' if is_mc_online else 'down.'}")
+        up_message = 'up. Please allow about a minute for initial world generation before playing. Hope you have fun!'
+        await channel.send(f"Minecraft server is now {up_message if is_mc_online else 'down.'}")
 
     # Bot presence
     presence = f"/help | Server {'up' if is_mc_online else 'down'}"
