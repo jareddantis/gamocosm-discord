@@ -87,7 +87,7 @@ async def update_presence_before():
 
 for category in find_commands(cmds, cmds.Category):
     logging.info(f"Configuring command category {category[1]}")
-    client.add_cog(category[1](client, discord_channel, server))
+    client.add_cog(category[1](client, server))
 
 update_presence.start()
 client.run(discord_key)
