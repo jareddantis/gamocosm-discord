@@ -6,18 +6,19 @@ This bot is designed to be deployed on a cloud platform service like Heroku. Con
 
 Included is a Python wrapper for the Gamocosm API (`api.py`). You are free to use it for your own projects.
 
-### Contents:
+## Contents
 
 * `api.py` Python wrapper for the Gamocosm API
-* `app.py` [Discord.py](http://discordpy.rtfd.org/en/latest) app
+* `app.py` Main [Discord.py](http://discordpy.rtfd.org/en/latest) app
 * `commands.py` All registered commands for the bot as Discord.py Cogs
+* `config.py` Handles retrieval of configuration from the build environment
 
-### Requirements:
+## Requirements
 
 * Python 3 (>= 3.6 because of f-strings)
-* Do `pip install -r requirements.txt`to install packages
+* `pip install -r requirements.txt` to install packages
 
-### Configuration:
+## Configuration
 1. Refer to the [Discord.py Docs](https://discordpy.readthedocs.io/en/latest/discord.html#discord-intro) to create a Bot account and add it to a guild/server
 2. Populate your chosen platform's build vars with your own configuration
     * `serverId`: Gamocosm server id
@@ -25,7 +26,9 @@ Included is a Python wrapper for the Gamocosm API (`api.py`). You are free to us
     * `discordKey`: The Discord bot api token from step 1
     * `discordChannel`: The id for the channel the bot should output messages to. Follow [this tutorial](https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-server-ID-)
     * `discordPrefix`: The message prefix for the bot
-3. Type `.help` for a list of commands
+    * `publicUrl` (optional): The default public server URL shown to users. Useful if you have a custom domain or subdomain pointing to your Gamocosm server.
+3. Deploy to your chosen service, or if you're testing locally, `python app.py`.
+4. Type `<discordPrefix>help` for a list of commands.
 
-### Documentation
-Refer to Docstrings and Comments for function documentation. You can add new commands as a class in `commands.py` that inherits from `Category()`
+## Documentation
+Refer to Docstrings and Comments for function documentation. You can add new commands as a class in `commands.py` that inherits from `Category()`.
