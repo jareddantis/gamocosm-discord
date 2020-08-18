@@ -103,9 +103,9 @@ class DOServer(Category):
             self.busy = False
             logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
 
-    @commands.command()
+    @commands.command(aliases=['restart'])
     async def reboot(self, ctx):
-        """Reboots the DigitalOcean VPS"""
+        """Reboots the DigitalOcean VPS. Also `/restart`."""
         if self.busy:
             await ctx.send(f'Server is currently busy with your last command `{self.current_action}`')
         else:
@@ -125,7 +125,7 @@ class Minecraft(Category):
 
     @commands.command()
     async def pause(self, ctx):
-        """Stops the Minecraft Server"""
+        """Stops the Minecraft server"""
         if self.busy:
             await ctx.send(f'Server is currently busy with your last command `{self.current_action}`')
         else:
@@ -153,7 +153,7 @@ class Minecraft(Category):
 
     @commands.command(aliases=['cmd'])
     async def command(self, ctx, *args):
-        """Issues a command to the Minecraft server"""
+        """Issues a command to the Minecraft server. Also `/cmd`."""
         if len(args):
             cmd = ' '.join(args)
             await ctx.send(f"Issuing command `/{cmd}` to server.")
@@ -176,14 +176,14 @@ class Minecraft(Category):
 
     @commands.command()
     async def backup(self, ctx):
-        """Remotely backups the world on the server. Requires VPS to be on but Minecraft server to be paused."""
+        """Starts remote backup. Requires Minecraft server to be paused."""
         response = api_error_handler(self.api.backup())
         await ctx.send(response)
         logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
 
-    @commands.command()
+    @commands.command(aliases=['dl'])
     async def download(self, ctx):
-        """Grabs a local download link for the world file. Requires VPS to be on but Minecraft server to be paused."""
+        """Grabs a ZIP download link for the world. Also `/dl`."""
         response = api_error_handler(self.api.download())
         await ctx.send(response)
         logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
