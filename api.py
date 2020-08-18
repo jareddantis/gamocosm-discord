@@ -25,7 +25,7 @@ class Server:
         self.server_id = server_id
         self.api_key = api_key
         self.api_url = f"https://gamocosm.com/servers/{server_id}/api/{api_key}/"
-        self.headers = {}
+        self.headers = {'Content-Type': 'application/json'}
         self.last_state = False
         self.last_mc_state = False
         self.last_op = None
@@ -81,6 +81,11 @@ class Server:
     def backup(self):
         """Sends POST request to remotely backup the world of the server"""
         return self._post("backup", "")['error']
+
+    def command(self, cmd):
+        """Sends command to Minecraft server"""
+        cmd_encoded = json.dumps({'command': cmd})
+        return self._post("exec", cmd_encoded)['error']
 
     def online(self):
         """Is the DO server online?"""

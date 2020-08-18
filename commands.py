@@ -152,15 +152,35 @@ class Minecraft(Category):
             logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
 
     @commands.command()
+    async def command(self, ctx, *args):
+        """Issues a command to the Minecraft server"""
+        if len(args):
+            cmd = ' '.join(args)
+            await ctx.send(f"Issuing command `/{cmd}` to server.")
+            response = api_error_handler(self.api.command(cmd))
+        else:
+            response = 'Missing command.'
+        await ctx.send(response)
+        logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
+
+    @commands.command()
+    async def save(self, ctx):
+        """Tells the server to save the current world immediately"""
+        await ctx.send('Telling server to save world now. This might take a while depending on world size.')
+        response = api_error_handler(self.api.command('save-all'))
+        await ctx.send(response)
+        logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
+
+    @commands.command()
     async def backup(self, ctx):
-        """Remotely backups the world on the Server"""
+        """Remotely backups the world on the server. Requires VPS to be on but Minecraft server to be paused."""
         response = api_error_handler(self.api.backup())
         await ctx.send(response)
         logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
 
     @commands.command()
     async def download(self, ctx):
-        """Grabs a local download link for the world file"""
+        """Grabs a local download link for the world file. Requires VPS to be on but Minecraft server to be paused."""
         response = api_error_handler(self.api.download())
         await ctx.send(response)
         logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
