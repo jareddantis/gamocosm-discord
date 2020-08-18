@@ -151,7 +151,7 @@ class Minecraft(Category):
             self.busy = False
             logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
 
-    @commands.command()
+    @commands.command(aliases=['cmd'])
     async def command(self, ctx, *args):
         """Issues a command to the Minecraft server"""
         if len(args):
@@ -166,10 +166,13 @@ class Minecraft(Category):
     @commands.command()
     async def save(self, ctx):
         """Tells the server to save the current world immediately"""
-        await ctx.send('Telling server to save world now. This might take a while depending on world size.')
-        response = api_error_handler(self.api.command('save-all'))
-        await ctx.send(response)
-        logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
+        await ctx.send('This might take a while depending on world size.')
+        await self.command(ctx, 'save-all')
+
+    @commands.command()
+    async def say(self, ctx, *args):
+        """Broadcasts message to Minecraft players. Same as `/say`."""
+        await self.command(ctx, 'say ' + ' '.join(args))
 
     @commands.command()
     async def backup(self, ctx):
