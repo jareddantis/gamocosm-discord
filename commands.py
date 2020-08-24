@@ -46,7 +46,7 @@ class Diagnostic(Category):
         domain = raw_response['domain']
         ip = raw_response['ip']
         mc = raw_response['minecraft']
-        mc_url = os.environ['publicUrl'] if os.environ['publicUrl'] else domain
+        mc_url = os.environ['publicUrl'] if 'publicUrl' in os.environ else domain
         mc_invite = f'! Play at **{mc_url}**' if mc else ''
 
         # Response
@@ -159,25 +159,17 @@ class Minecraft(Category):
     @commands.command(aliases=['cmd'])
     async def command(self, ctx, *args):
         """Issues a command to the Minecraft server. Also `/cmd`."""
-        if len(args):
-            cmd = ' '.join(args)
-            await ctx.send(f"Issuing command `/{cmd}` to server.")
-            response = api_error_handler(self.api.command(cmd))
+        if 'allowCommands' in os.environ and os.environ['allowCommands'] == 'true':
+            if len(args):
+                cmd = ' '.join(args)
+                await ctx.send(f"Issuing command `/{cmd}` to server.")
+                response = api_error_handler(self.api.command(cmd))
+            else:
+                response = 'Missing command.'
         else:
-            response = 'Missing command.'
+            response = 'Server commands were disabled for this bot.'
         await ctx.send(response)
         logging.info(f"'{ctx.command}' command called by {ctx.author}. Response was '{response}'")
-
-    @commands.command()
-    async def save(self, ctx):
-        """Tells the server to save the current world immediately"""
-        await ctx.send('This might take a while depending on world size.')
-        await self.command(ctx, 'save-all')
-
-    @commands.command()
-    async def say(self, ctx, *args):
-        """Broadcasts message to Minecraft players. Same as `/say`."""
-        await self.command(ctx, 'say ' + ' '.join(args))
 
     @commands.command()
     async def backup(self, ctx):

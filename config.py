@@ -2,6 +2,8 @@ import os
 
 
 def get_config():
+    # The keys below are required config keys. The bot will refuse to run without them.
+    # Any other configs that are non-essential can be accessed through os.environ[key].
     keys = ['serverId', 'apiKey', 'discordKey', 'discordChannel', 'discordPrefix']
     config = {}
 
