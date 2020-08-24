@@ -40,6 +40,20 @@ async def on_ready():
     server.last_op = server.pending()
 
 
+@client.event
+async def on_message(message):
+    # Ignore messages sent anywhere else
+    if message.channel.id != discord_channel:
+        return
+
+    # Ignore messages sent by this bot.
+    # Useful when using Minecraft plugins that integrate with Discord.
+    if message.author == client.user:
+        return
+
+    await client.process_commands(message)
+
+
 @loop(seconds=15)
 async def update_presence():
     status = server.status()
