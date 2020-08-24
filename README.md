@@ -27,10 +27,10 @@ Included is a Python wrapper for the Gamocosm API (`api.py`). You are free to us
 |`serverId`|Gamocosm server ID|
 |`apiKey`|Gamocosm API key (under advanced tab in server settings)|
 |`discordKey`|The Discord bot API token from step 1|
-|`discordChannel`|The ID for the channel the bot should reply to and receive from. Follow [this tutorial.](|https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-server-ID-)|
+|`discordChannel`|The ID for the channel the bot should reply to and receive from. Follow [this tutorial.](https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-server-ID-)|
 |`discordPrefix`|The message prefix for the bot|
 |`publicUrl`|(Optional) The default public server URL shown to users. Useful if you have a custom domain or subdomain pointing to your Gamocosm server.|
-|`allowCommands`|(Optional) Whether to allow the bot to forward commands to the Minecraft server. See **Minecraft server commands** below.|
+|`allowCommands`|(Optional) Whether to allow the bot to forward commands to the Minecraft server. See [**Minecraft server commands.**](#Minecraft-server-commands)|
 
 3. Deploy to your chosen service, or if you're testing locally, `python app.py`. Note that if you're testing locally, your config must be set as environment variables.
 4. Type `<discordPrefix>help` for a list of commands.
