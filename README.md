@@ -15,20 +15,32 @@ Included is a Python wrapper for the Gamocosm API (`api.py`). You are free to us
 
 ## Requirements
 
-* Python 3 (>= 3.6 because of f-strings)
-* `pip install -r requirements.txt` to install packages
+* Python 3.6+ (f-string support required)
+* `pip install -r requirements.txt` to install packages if testing locally
 
-## Configuration
+## Configuration & deployment
 1. Refer to the [Discord.py Docs](https://discordpy.readthedocs.io/en/latest/discord.html#discord-intro) to create a Bot account and add it to a guild/server
 2. Populate your chosen platform's build vars with your own configuration
-    * `serverId`: Gamocosm server id
-    * `apiKey`: Gamocosm api key (under advanced tab in server settings)
-    * `discordKey`: The Discord bot api token from step 1
-    * `discordChannel`: The id for the channel the bot should output messages to. Follow [this tutorial](https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-server-ID-)
-    * `discordPrefix`: The message prefix for the bot
-    * `publicUrl` (optional): The default public server URL shown to users. Useful if you have a custom domain or subdomain pointing to your Gamocosm server.
-3. Deploy to your chosen service, or if you're testing locally, `python app.py`.
+
+|Config key|Description|
+|-----|-----|
+|`serverId`|Gamocosm server ID|
+|`apiKey`|Gamocosm API key (under advanced tab in server settings)|
+|`discordKey`|The Discord bot API token from step 1|
+|`discordChannel`|The ID for the channel the bot should reply to and receive from. Follow [this tutorial.](|https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-server-ID-)|
+|`discordPrefix`|The message prefix for the bot|
+|`publicUrl`|(Optional) The default public server URL shown to users. Useful if you have a custom domain or subdomain pointing to your Gamocosm server.|
+|`allowCommands`|(Optional) Whether to allow the bot to forward commands to the Minecraft server. See **Minecraft server commands** below.|
+
+3. Deploy to your chosen service, or if you're testing locally, `python app.py`. Note that if you're testing locally, your config must be set as environment variables.
 4. Type `<discordPrefix>help` for a list of commands.
+
+## Minecraft server commands
+The bot has the optional ability to relay server commands, such as `/teleport` and `/give`, to your Minecraft server.
+Just make sure `allowCommands` is set to `true` in your build vars. Any other value will cause this ability to be disabled.
+
+To send commands to your Minecraft server, say `/command <command without leading slash>` or `/cmd <command without leading slash`.
+For instance, to give all players a stack of emeralds, do `/cmd give @a minecraft:emerald 64`.
 
 ## Documentation
 Refer to Docstrings and Comments for function documentation. You can add new commands as a class in `commands.py` that inherits from `Category()`.
